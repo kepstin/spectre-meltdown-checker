@@ -377,7 +377,12 @@ is_cpu_vulnerable()
 		# AMD revised their statement about variant2 => vulnerable
 		# https://www.amd.com/en/corporate/speculative-execution
 		variant1=vuln
-		variant2=vuln
+		if [ "$cpu_family" -eq 5 ]; then
+			_debug "is_cpu_vulnerable: AMD family 5 (K6) does not predict indirect branches"
+			variant2=immune
+		else
+			variant2=vuln
+		fi
 		[ -z "$variant3"  ] && variant3=immune
 		# https://www.amd.com/en/corporate/security-updates
 		# "We have not identified any AMD x86 products susceptible to the Variant 3a vulnerability in our analysis to-date."
